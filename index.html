@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>American Ambulance - Ride-Along Program</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .page-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-top: 5px solid #c8102e;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-img {
+      max-width: 280px;
+      height: auto;
+    }
+
+
+
+    .header h1 {
+      color: #c8102e;
+      font-size: 26px;
+      margin-top: 10px;
+    }
+
+    /* Info Sections */
+    .info-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .info-section h2 {
+      color: #003da5;
+      font-size: 20px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e8e8e8;
+    }
+
+    .info-section h3 {
+      color: #003da5;
+      font-size: 17px;
+      margin: 16px 0 8px;
+    }
+
+    .info-section p {
+      margin-bottom: 10px;
+      font-size: 14.5px;
+    }
+
+    .info-section ul {
+      margin: 8px 0 12px 24px;
+      font-size: 14.5px;
+    }
+
+    .info-section ul li {
+      margin-bottom: 4px;
+    }
+
+    .info-section .bold-label {
+      font-weight: 700;
+    }
+
+    .info-section .important-note {
+      color: #c8102e;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .dress-code-list li {
+      margin-bottom: 6px;
+    }
+
+    /* Agreement Section */
+    .agreement-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid #c8102e;
+    }
+
+    .agreement-section h2 {
+      color: #c8102e;
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .agreement-section h2 + h2 {
+      margin-bottom: 16px;
+    }
+
+    .agreement-section .agreement-intro {
+      font-size: 14px;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .agreement-section ol {
+      margin: 12px 0 12px 20px;
+      font-size: 13.5px;
+    }
+
+    .agreement-section ol li {
+      margin-bottom: 12px;
+      line-height: 1.55;
+    }
+
+    .agreement-section .acknowledgment {
+      font-size: 14px;
+      margin-top: 16px;
+      padding: 14px;
+      background: #fff;
+      border-radius: 6px;
+      border: 2px solid #c8102e;
+      line-height: 1.6;
+    }
+
+    /* Form Section */
+    .form-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .form-section h2 {
+      color: #003da5;
+      font-size: 20px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #003da5;
+    }
+
+    .form-group-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #003da5;
+      margin: 20px 0 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .form-group label .required {
+      color: #c8102e;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+      background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #003da5;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0,61,165,0.1);
+    }
+
+    .form-group input.error {
+      border-color: #c8102e;
+      box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px 0;
+      padding: 14px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: #003da5;
+    }
+
+    .checkbox-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+    }
+
+    /* Signature */
+    .signature-section {
+      margin-top: 20px;
+    }
+
+    .signature-section label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .signature-pad-wrapper {
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+
+    .signature-pad-wrapper.active {
+      border-color: #003da5;
+    }
+
+    #signature-pad {
+      width: 100%;
+      height: 150px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .signature-pad-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: #f8f9fa;
+      border-top: 1px solid #eee;
+    }
+
+    .signature-pad-footer span {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .btn-clear-sig {
+      background: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .btn-clear-sig:hover {
+      background: #f0f0f0;
+    }
+
+    /* DL Upload */
+    .dl-upload-section {
+      margin-top: 20px;
+      margin-bottom: 14px;
+    }
+
+    .dl-upload-section > label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .dl-upload-area {
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fafafa;
+      position: relative;
+    }
+
+    .dl-upload-area:hover,
+    .dl-upload-area.dragover {
+      border-color: #003da5;
+      background: #f0f4fa;
+    }
+
+    .dl-upload-area.has-image {
+      padding: 12px;
+      border-style: solid;
+      border-color: #28a745;
+      background: #f8fff8;
+    }
+
+    .dl-upload-area .upload-icon {
+      font-size: 36px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .dl-upload-area .upload-text {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .dl-upload-area .upload-text strong {
+      color: #003da5;
+    }
+
+    .dl-upload-area .upload-hint {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .dl-upload-area input[type="file"] {
+      display: none;
+    }
+
+    .dl-preview-container {
+      display: none;
+    }
+
+    .dl-preview-container.visible {
+      display: block;
+    }
+
+    .dl-preview-container img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    .dl-preview-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dl-preview-actions .file-info {
+      font-size: 12px;
+      color: #28a745;
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #003da5;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #002d7a;
+    }
+
+    .btn-primary:disabled {
+      background: #99afd0;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: #003da5;
+      border: 2px solid #003da5;
+    }
+
+    .btn-secondary:hover {
+      background: #f0f4fa;
+    }
+
+    .btn-danger {
+      background: #c8102e;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #a00d24;
+    }
+
+    /* Status Messages */
+    .status-message {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-top: 16px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .status-message.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: #003da5;
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .page-container {
+        padding: 10px;
+      }
+      .header h1 {
+        font-size: 20px;
+      }
+      .form-actions {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <img src="logo.png" alt="American Ambulance" class="logo-img">
+    </div>
+    <h1>Ride-Along Program</h1>
+  </div>
+
+  <!-- Program Info -->
+  <div class="info-section">
+    <p>American Ambulance is pleased to provide an opportunity to observe prehospital Emergency Medical Services for Fresno and Kings County.</p>
+
+    <h2>Who can participate?</h2>
+    <ul>
+      <li>Base Hospital Physicians, Residents, and MICNs as required by CCEMSA.</li>
+      <li>EMT Students 18 years or older who are currently in an EMT Program that has a Clinical Affiliation Agreement with American Ambulance.</li>
+      <li>Guests of employees; employees are permitted to have two guests per year.</li>
+    </ul>
+
+    <h2>How do I schedule a ride-along?</h2>
+    <p>If you are a:</p>
+
+    <p><span class="bold-label">Current Base Hospital Physician, Resident or current MICN</span> &ndash; Contact our Fresno office at (559) 443-5959, Monday through Friday, 0800 &ndash; 1700, to schedule a shift. You will be required to submit a signed copy of Ride-Along Agreement and Release of Liability, along with a copy of your ID. To request a shift in Kings County, contact our Hanford office at (559) 585-6803.</p>
+
+    <p><span class="bold-label">MICN and EMT Students</span> &ndash; Your program will have you complete a Ride-Along Agreement and Release of Liability and provide a copy of your ID and forward them to us. American Ambulance will advise your program when we are ready to start scheduling. For shifts in Fresno, call (559) 443-5959, for Kings County call (559) 585-6803.</p>
+
+    <p><span class="bold-label">Guests of American Ambulance Employees</span> &ndash; Complete the Ride-Along Agreement and Release of Liability and provide a copy of your ID. Once submitted, the employee you are riding with will need to call to have you scheduled; (559) 443-5959 for Fresno shifts, (559) 585-6803 for Kings County.</p>
+
+    <p class="important-note">Please Note: The completed Ride-Along Agreement and Release of Liability and copy of your ID must be submitted prior to the ride-along. You will not be allowed to ride-along without submitting these items.</p>
+
+    <h2>Your role as a ride-along</h2>
+    <p>The ride-along program is an opportunity to <strong>observe</strong> EMS operations and learn about EMS and the roles of EMS providers; you will not be directly involved in patient care.</p>
+    <p>You are a guest of American Ambulance and will be taken into the homes of people who have requested our assistance. Even though a caller has requested our assistance, we are still guests and must conduct ourselves accordingly. If your behavior is inappropriate, we will make arrangements to end your shift.</p>
+    <p>As healthcare professionals we are required to protect the privacy of patients' information. This includes, but is not limited to, name, DOB, address, and medical history. Private health information disclosed in your presence may not be discussed with others outside of your ride-along. It is permissible to discuss general information with the others regarding the patient's condition and the treatment they received.</p>
+    <p>Ambulance personnel will sign shift documentation forms if required by your program. Copies of Patient Care Reports will not be provided.</p>
+
+    <h2>Appearance &amp; Dress Code</h2>
+    <p>American Ambulance requires all ride-alongs to be appropriately groomed; clean with no after-shave or perfume, facial hair should be neat and trimmed, and shoulder-length hair should be pulled back in a ponytail or bun.</p>
+    <p>Base hospital physicians, residents, MICNs (current and in training), and EMT students may wear their program uniform for their ride-along.</p>
+    <p>If you are a guest of an employee or do not have a program uniform, the following dress code applies:</p>
+    <ul class="dress-code-list">
+      <li>Dark blue or black slacks (no jeans, sweatpants, scrubs, or jeggings).</li>
+      <li>Flat, closed toed shoes (no sandals, heels, or cowboy boots).</li>
+      <li>Work boots and plain tennis shoes or sneakers that are a single neutral color are permissible.</li>
+      <li>Single color, collared shirt (no t-shirts).</li>
+      <li>Personal items, other than a stethoscope, are not permitted.</li>
+    </ul>
+
+    <h2>Preparing for your shift</h2>
+    <p>We ask that you arrive at least 10-15 minutes prior to your shift time.</p>
+    <ul>
+      <li><strong>Fresno Headquarters</strong> &ndash; 2911 E. Tulare St. Go to the entrance on the east side of the building that says "Operations/Ride-Alongs". Press the "Ring" button. Someone will come to let you in.</li>
+      <li><strong>Kings Headquarters</strong> &ndash; 910 Garner Ave. Please park at the north end of the parking lot. Enter through the front entrance of the building (south side). If you are riding on a weekend or holiday, please go to the back entrance at the ambulance bay (east side). The door will be locked; knock and someone will let you in.</li>
+    </ul>
+    <p style="margin-top:10px;">Please plan accordingly for food and drinks. You are welcome to bring snacks/lunch with you (small coolers/lunch boxes are OK). While crews may be able to stop for food and snacks throughout the shift, there are no guarantees you will be able to eat.</p>
+    <p>Due to the dynamic and unpredictable nature of our work, you could be sent out of town and/or be held over past your originally scheduled end time. Scheduled shifts are a minimum of 12 hours.</p>
+    <p>We hope your ride-along experience is educational and informative. Please forward any comments about our service and/or your experience to <a href="mailto:hr@americanambulance.com">hr@americanambulance.com</a>.</p>
+  </div>
+
+  <!-- Agreement Text -->
+  <div class="agreement-section">
+    <h2>Ride-Along Agreement &amp;</h2>
+    <h2>Release of Liability</h2>
+    <p class="agreement-intro">This must be completed and provided to American Ambulance with a copy of your ID.</p>
+
+    <p style="margin:12px 0;">In consideration of allowing me to ride-along on an ambulance, I agree to the following:</p>
+
+    <ol>
+      <li>I understand that a ride-along allows me to participate as an observer for an unspecified period of time. The ambulance crew may be dispatched to any location, including those that are considered "dangerous". I further understand that witnessing the condition and disposition of the patients during the ride-along may be disturbing or distressing and I may be exposed to life threatening illnesses.</li>
+      <li>I understand the locations the ambulance may visit, including, but not limited to, patient residences, accident scenes, hospitals, patient care facilities, and prisons may carry risks of injury or infection that are either known or unknown to the ambulance crew, but are unavoidable due to the duty of the ambulance crew to respond to the location.</li>
+      <li><strong>Assumption of Risk:</strong> I am aware of the inherent risks of injury, death, and property damage involved in participating as a Ride-Along Observer, including without limitation risks due to negligent instruction or supervision. I am aware of the risks of injury, death, and property damage that may result from, among other causes, the active or passive negligence of K.W.P.H. Enterprises dba "American Ambulance" and its officers, directors, employees, and agents, (collectively, "released parties"), including without limitation the risk of negligent instruction or supervision. I am voluntarily engaging in Ride-Along Observation with knowledge of the risks of injury, death, property damage, and other risks, and I assume any and all known and unknown risks of injury, death, and property damage that may result from the Ride-Along Observation shift.</li>
+      <li><strong><em>Release of Liability.</em></strong> I hereby release released parties from all liability to me and my principals, employees, agents, representatives, guardians, successors, assigns, heirs, children, and next of kin for all liability, claims, damage, or demands for personal injury, death, or property damage, arising from or related to this agreement or to my participation as a Ride-Along observer, whether the injury, death, or property damage occurs on or off the premises. This release includes, without limitation, any personal injury, death, or property damage caused by the active or passive negligence of any of the released parties. <strong>I TAKE SOLE RESPONSIBILITY FOR ANY LOSS.</strong></li>
+      <li>I agree to indemnify, defend, and hold harmless K.W.P.H. Enterprises dba, "American Ambulance", its officers, employees and agents against all liability, demands, claims, costs, losses, damages, recoveries, settlements, and expenses incurred by me, known or unknown, directly or indirectly, related to claims, suits, or actions arising from my participation on the ride-along.</li>
+      <li>I agree to follow the direction of the ambulance crew members and field supervisors and recognize that failure to do so may result in termination of the ride-along. I agree to abide by all local, state, and federal laws during the ride-along and while on American Ambulance premises.</li>
+      <li>I will maintain the confidentiality of all information related to the identity of, treatments to, conditions, complaints, or circumstances of patients (Protected Health Information or "PHI"). I will not use or disclose PHI to third parties and will not attempt to contact patients, their relatives, representatives, or associates based on my knowledge of PHI.</li>
+      <li>If I become ill or incapacitated, the ambulance crew may take whatever actions they deem necessary to secure medical treatment (at my expense), including transport to a hospital or other patient care facility.</li>
+      <li>This Agreement constitutes the entire agreement between the parties and supersedes all prior communications, understandings, and agreement relating to the subject matter hereof, whether oral or written. Any modification to the agreement between the parties must be made in writing.</li>
+    </ol>
+
+    <div class="acknowledgment">
+      <div class="checkbox-group" style="margin: 0; padding: 0;">
+        <input type="checkbox" id="agree-checkbox" required form="waiver-form">
+        <label for="agree-checkbox" style="font-weight: 600;">I have carefully read and fully understand this Agreement and Release of Liability. I understand it includes an assumption of risk of the released party's negligence and release of their liability. I acknowledge that K.W.P.H. Enterprises dba "American Ambulance" is materially relying on this waiver and is allowing me to participate as a Ride-Along Observer. <span class="required">*</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <form id="waiver-form" class="form-section">
+    <h2>Rider Information</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name <span class="required">*</span></label>
+        <input type="text" id="rider-name" required>
+      </div>
+      <div class="form-group">
+        <label>Date <span class="required">*</span></label>
+        <input type="date" id="rider-date" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Address <span class="required">*</span></label>
+        <input type="text" id="rider-address" required>
+      </div>
+      <div class="form-group">
+        <label>Driver License / State ID # <span class="required">*</span></label>
+        <input type="text" id="rider-dl" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>City, State &amp; Zip <span class="required">*</span></label>
+        <input type="text" id="rider-csz" required>
+      </div>
+      <div class="form-group">
+        <label>Phone <span class="required">*</span></label>
+        <input type="tel" id="rider-phone" required>
+      </div>
+    </div>
+
+    <!-- Driver License Photo Upload -->
+    <div class="dl-upload-section">
+      <label>Driver License / State ID Photo <span class="required">*</span></label>
+      <div class="dl-upload-area" id="dl-upload-area">
+        <div id="dl-upload-prompt">
+          <div class="upload-icon">&#128247;</div>
+          <div class="upload-text"><strong>Take a photo</strong> or <strong>upload an image</strong> of your Driver License / State ID</div>
+          <div class="upload-hint">Tap to open camera on mobile, or click to browse files. Accepts JPG, PNG, HEIC.</div>
+        </div>
+        <div class="dl-preview-container" id="dl-preview-container">
+          <img id="dl-preview-img" alt="Driver License preview">
+          <div class="dl-preview-actions">
+            <span class="file-info" id="dl-file-info">Image uploaded</span>
+            <button type="button" class="btn-clear-sig" id="dl-remove-btn">Remove</button>
+          </div>
+        </div>
+        <!-- capture="environment" opens the rear camera on mobile devices -->
+        <input type="file" id="dl-file-input" accept="image/*" capture="environment">
+      </div>
+    </div>
+
+    <div class="form-group-title">Program Information</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Program / School</label>
+        <input type="text" id="program-school">
+      </div>
+      <div class="form-group">
+        <label>Primary Instructor</label>
+        <input type="text" id="program-instructor">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date Semester Starts <em>(if applicable)</em></label>
+        <input type="date" id="semester-start">
+      </div>
+      <div class="form-group">
+        <label>Date Semester Ends <em>(if applicable)</em></label>
+        <input type="date" id="semester-end">
+      </div>
+    </div>
+
+    <div class="form-group-title">Emergency Contact</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name <span class="required">*</span></label>
+        <input type="text" id="ec-name" required>
+      </div>
+      <div class="form-group">
+        <label>Phone <span class="required">*</span></label>
+        <input type="tel" id="ec-phone" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Relation <span class="required">*</span></label>
+        <input type="text" id="ec-relation" required>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" id="ec-address">
+      </div>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature-section">
+      <label>Signature of Observer <span class="required">*</span></label>
+      <div class="signature-pad-wrapper" id="sig-wrapper">
+        <canvas id="signature-pad"></canvas>
+        <div class="signature-pad-footer">
+          <span>Sign above using your mouse or finger</span>
+          <button type="button" class="btn-clear-sig" id="clear-sig">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" id="btn-submit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+        Submit &amp; Email PDF
+      </button>
+      <button type="button" class="btn btn-secondary" id="btn-download">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </button>
+    </div>
+
+    <div id="status-message" class="status-message"></div>
+  </form>
+
+  <div class="footer">
+    <p>American Ambulance | Ride-Along Program</p>
+    <p>Questions? Contact <a href="mailto:hr@americanambulance.com">hr@americanambulance.com</a></p>
+  </div>
+
+</div>
+
+<!-- Signature Pad Library -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+
+<script>
+(function() {
+  // ── Signature Pad Setup ──
+  const canvas = document.getElementById('signature-pad');
+  const wrapper = document.getElementById('sig-wrapper');
+
+  function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    signaturePad.clear();
+  }
+
+  const signaturePad = new SignaturePad(canvas, {
+    backgroundColor: 'rgb(255,255,255)',
+    penColor: 'rgb(0,0,0)'
+  });
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  canvas.addEventListener('pointerdown', () => wrapper.classList.add('active'));
+  canvas.addEventListener('pointerup', () => wrapper.classList.remove('active'));
+
+  document.getElementById('clear-sig').addEventListener('click', () => {
+    signaturePad.clear();
+  });
+
+  // ── Driver License Upload ──
+  const dlUploadArea = document.getElementById('dl-upload-area');
+  const dlFileInput = document.getElementById('dl-file-input');
+  const dlPreviewContainer = document.getElementById('dl-preview-container');
+  const dlPreviewImg = document.getElementById('dl-preview-img');
+  const dlUploadPrompt = document.getElementById('dl-upload-prompt');
+  const dlFileInfo = document.getElementById('dl-file-info');
+  let dlImageDataUrl = null;
+
+  dlUploadArea.addEventListener('click', function(e) {
+    if (e.target.id === 'dl-remove-btn') return;
+    dlFileInput.click();
+  });
+
+  dlUploadArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dlUploadArea.classList.add('dragover');
+  });
+
+  dlUploadArea.addEventListener('dragleave', function() {
+    dlUploadArea.classList.remove('dragover');
+  });
+
+  dlUploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dlUploadArea.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      handleDLFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  dlFileInput.addEventListener('change', function() {
+    if (dlFileInput.files.length) {
+      handleDLFile(dlFileInput.files[0]);
+    }
+  });
+
+  document.getElementById('dl-remove-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    dlImageDataUrl = null;
+    dlFileInput.value = '';
+    dlPreviewContainer.classList.remove('visible');
+    dlUploadPrompt.style.display = '';
+    dlUploadArea.classList.remove('has-image');
+  });
+
+  function handleDLFile(file) {
+    if (!file.type.startsWith('image/')) {
+      showStatus('Please upload an image file (JPG, PNG, etc.).', 'error');
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      showStatus('Image is too large. Please use a file under 15MB.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Resize the image to keep PDF size reasonable
+      const img = new Image();
+      img.onload = function() {
+        const maxDim = 1600;
+        let w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+          else { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        dlImageDataUrl = c.toDataURL('image/jpeg', 0.8);
+
+        dlPreviewImg.src = dlImageDataUrl;
+        dlPreviewContainer.classList.add('visible');
+        dlUploadPrompt.style.display = 'none';
+        dlUploadArea.classList.add('has-image');
+        const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+        dlFileInfo.textContent = file.name + ' (' + sizeMB + ' MB)';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Set today's date as default ──
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('rider-date').value = today;
+
+  // ── Form Helpers ──
+  function getFormData() {
+    return {
+      riderName: document.getElementById('rider-name').value.trim(),
+      riderDate: document.getElementById('rider-date').value,
+      riderAddress: document.getElementById('rider-address').value.trim(),
+      riderDL: document.getElementById('rider-dl').value.trim(),
+      riderCSZ: document.getElementById('rider-csz').value.trim(),
+      riderPhone: document.getElementById('rider-phone').value.trim(),
+      programSchool: document.getElementById('program-school').value.trim(),
+      programInstructor: document.getElementById('program-instructor').value.trim(),
+      semesterStart: document.getElementById('semester-start').value,
+      semesterEnd: document.getElementById('semester-end').value,
+      ecName: document.getElementById('ec-name').value.trim(),
+      ecPhone: document.getElementById('ec-phone').value.trim(),
+      ecRelation: document.getElementById('ec-relation').value.trim(),
+      ecAddress: document.getElementById('ec-address').value.trim()
+    };
+  }
+
+  function validateForm() {
+    const form = document.getElementById('waiver-form');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return false;
+    }
+    if (!dlImageDataUrl) {
+      showStatus('Please upload a photo of your Driver License / State ID.', 'error');
+      document.getElementById('dl-upload-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    if (signaturePad.isEmpty()) {
+      showStatus('Please provide your signature before submitting.', 'error');
+      return false;
+    }
+    if (!document.getElementById('agree-checkbox').checked) {
+      showStatus('You must agree to the terms before submitting.', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('status-message');
+    el.textContent = msg;
+    el.className = 'status-message ' + type;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    return `${m}/${d}/${y}`;
+  }
+
+  // ── PDF Generation ──
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'letter');
+    const data = getFormData();
+    const pw = 215.9; // letter width mm
+    const margin = 20;
+    const contentW = pw - margin * 2;
+    let y = 20;
+
+    // Colors
+    const blue = [0, 61, 165];
+    const red = [200, 16, 46];
+    const black = [0, 0, 0];
+    const gray = [100, 100, 100];
+
+    // Header
+    doc.setFillColor(...blue);
+    doc.rect(0, 0, pw, 4, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(...blue);
+    doc.text('AMERICAN AMBULANCE', pw / 2, y, { align: 'center' });
+    y += 10;
+
+    doc.setFontSize(18);
+    doc.setTextColor(...red);
+    doc.text('Ride-Along Agreement & Release of Liability', pw / 2, y, { align: 'center' });
+    y += 8;
+
+    doc.setDrawColor(...red);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pw - margin, y);
+    y += 10;
+
+    // Rider Info Section
+    doc.setFontSize(13);
+    doc.setTextColor(...blue);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Rider Information', margin, y);
+    y += 7;
+
+    function addField(label, value, x, yPos, w) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(...gray);
+      doc.text(label, x, yPos);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(...black);
+      doc.text(value || '', x, yPos + 5);
+      doc.setDrawColor(200, 200, 200);
+      doc.line(x, yPos + 7, x + w, yPos + 7);
+    }
+
+    const halfW = (contentW - 10) / 2;
+    const col1 = margin;
+    const col2 = margin + halfW + 10;
+
+    addField('Name', data.riderName, col1, y, halfW);
+    addField('Date', formatDate(data.riderDate), col2, y, halfW);
+    y += 14;
+
+    addField('Address', data.riderAddress, col1, y, halfW);
+    addField('Driver License / State ID #', data.riderDL, col2, y, halfW);
+    y += 14;
+
+    addField('City, State & Zip', data.riderCSZ, col1, y, halfW);
+    addField('Phone', data.riderPhone, col2, y, halfW);
+    y += 18;
+
+    // Program Info
+    doc.setFontSize(13);
+    doc.setTextColor(...blue);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Program Information', margin, y);
+    y += 7;
+
+    addField('Program / School', data.programSchool, col1, y, halfW);
+    addField('Primary Instructor', data.programInstructor, col2, y, halfW);
+    y += 14;
+
+    addField('Semester Starts', formatDate(data.semesterStart), col1, y, halfW);
+    addField('Semester Ends', formatDate(data.semesterEnd), col2, y, halfW);
+    y += 18;
+
+    // Emergency Contact
+    doc.setFontSize(13);
+    doc.setTextColor(...blue);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Emergency Contact', margin, y);
+    y += 7;
+
+    addField('Name', data.ecName, col1, y, halfW);
+    addField('Phone', data.ecPhone, col2, y, halfW);
+    y += 14;
+
+    addField('Relation', data.ecRelation, col1, y, halfW);
+    addField('Address', data.ecAddress, col2, y, halfW);
+    y += 20;
+
+    // Agreement terms (abbreviated on PDF)
+    doc.setDrawColor(...blue);
+    doc.setLineWidth(0.3);
+    doc.line(margin, y, pw - margin, y);
+    y += 8;
+
+    doc.setFontSize(11);
+    doc.setTextColor(...black);
+    doc.setFont('helvetica', 'normal');
+
+    const agreementText = 'I have carefully read and fully understand the Ride-Along Agreement and Release of Liability. I understand it includes an assumption of risk of the released party\'s negligence and release of their liability. I acknowledge that K.W.P.H. Enterprises dba "American Ambulance" is materially relying on this waiver and is allowing me to participate as a Ride-Along Observer.';
+
+    const lines = doc.splitTextToSize(agreementText, contentW);
+    doc.text(lines, margin, y);
+    y += lines.length * 5 + 10;
+
+    // Signature
+    doc.setFontSize(10);
+    doc.setTextColor(...gray);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Signature of Observer:', margin, y);
+    y += 3;
+
+    // Add signature image
+    const sigDataUrl = signaturePad.toDataURL('image/png');
+    doc.addImage(sigDataUrl, 'PNG', margin, y, 70, 25);
+    y += 28;
+
+    doc.setDrawColor(...black);
+    doc.line(margin, y, margin + 80, y);
+    y += 6;
+
+    addField('Printed Name', data.riderName, col1, y, halfW);
+    addField('Date', formatDate(data.riderDate), col2, y, halfW);
+    y += 14;
+
+    // Footer bar page 1
+    doc.setFillColor(...red);
+    doc.rect(0, 275, pw, 4, 'F');
+    doc.setFontSize(8);
+    doc.setTextColor(...red);
+    doc.text('AMERICAN AMBULANCE | Ride-Along Program', pw / 2, 273, { align: 'center' });
+
+    // ── Page 2: Driver License Photo ──
+    if (dlImageDataUrl) {
+      doc.addPage();
+      doc.setFillColor(...blue);
+      doc.rect(0, 0, pw, 4, 'F');
+
+      let y2 = 20;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(...blue);
+      doc.text('Driver License / State ID', pw / 2, y2, { align: 'center' });
+      y2 += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(...gray);
+      doc.text('Submitted by: ' + data.riderName + '  |  Date: ' + formatDate(data.riderDate), pw / 2, y2, { align: 'center' });
+      y2 += 8;
+
+      doc.setDrawColor(...red);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y2, pw - margin, y2);
+      y2 += 8;
+
+      // Fit DL image within content area
+      const imgMaxW = contentW;
+      const imgMaxH = 200; // mm
+      const tmpImg = new Image();
+      tmpImg.src = dlImageDataUrl;
+      let imgW = tmpImg.width;
+      let imgH = tmpImg.height;
+      const scaleW = imgMaxW / imgW;
+      const scaleH = imgMaxH / imgH;
+      const scale = Math.min(scaleW, scaleH, 1);
+      imgW = imgW * scale;
+      imgH = imgH * scale;
+      // Convert px to mm (assume 96 dpi -> 1px = 0.2646mm) but use ratio-based sizing
+      const mmPerPx = imgMaxW / (imgMaxW / scale / 0.2646) * 0.2646;
+      // Simpler: just use the max dimensions and aspect ratio
+      const aspectRatio = tmpImg.width / tmpImg.height;
+      let finalW, finalH;
+      if (aspectRatio > imgMaxW / imgMaxH) {
+        finalW = imgMaxW;
+        finalH = imgMaxW / aspectRatio;
+      } else {
+        finalH = imgMaxH;
+        finalW = imgMaxH * aspectRatio;
+      }
+      const imgX = margin + (imgMaxW - finalW) / 2;
+
+      try {
+        doc.addImage(dlImageDataUrl, 'JPEG', imgX, y2, finalW, finalH);
+      } catch(e) {
+        doc.setFontSize(12);
+        doc.setTextColor(...red);
+        doc.text('(Driver License image could not be embedded)', pw / 2, y2 + 20, { align: 'center' });
+      }
+
+      // Footer bar page 2
+      doc.setFillColor(...red);
+      doc.rect(0, 275, pw, 4, 'F');
+      doc.setFontSize(8);
+      doc.setTextColor(...red);
+      doc.text('AMERICAN AMBULANCE | Ride-Along Program', pw / 2, 273, { align: 'center' });
+    }
+
+    return doc;
+  }
+
+  // ── Download PDF ──
+  document.getElementById('btn-download').addEventListener('click', function() {
+    if (!validateForm()) return;
+    const doc = generatePDF();
+    const data = getFormData();
+    const safeName = data.riderName.replace(/[^a-zA-Z0-9]/g, '_');
+    doc.save(`RideAlong_Waiver_${safeName}.pdf`);
+    showStatus('PDF downloaded successfully!', 'success');
+  });
+
+  // ── Submit & Email ──
+  document.getElementById('waiver-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('btn-submit');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Submitting...';
+    showStatus('Generating PDF and sending email...', 'info');
+
+    try {
+      const doc = generatePDF();
+      const pdfBase64 = doc.output('datauristring').split(',')[1];
+      const data = getFormData();
+
+      const response = await fetch('/api/submit-waiver', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          riderName: data.riderName,
+          riderDate: data.riderDate,
+          pdfBase64: pdfBase64,
+          dlImageBase64: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : null
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showStatus('Waiver submitted successfully! A PDF copy has been emailed.', 'success');
+      } else {
+        showStatus('Email failed: ' + (result.error || 'Unknown error') + '. You can still download the PDF using the button above.', 'error');
+      }
+    } catch (err) {
+      showStatus('Could not connect to the server. You can download the PDF instead.', 'error');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  });
+
+})();
+</script>
+
+</body>
+</html>
