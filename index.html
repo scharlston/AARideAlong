@@ -1207,9 +1207,10 @@
     showStatus('Generating PDF and compressing DL image...', 'info');
 
     try {
-      // Auto-download the PDF first
+      // Generate the PDF (includes DL on page 2)
       const doc = generatePDF();
-      doc.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
+      const pdfBase64 = doc.output('datauristring').split(',')[1];
+      const riderName = document.getElementById('riderName').value || 'Unknown';
 
       const data = getFormData();
 
@@ -1225,19 +1226,30 @@
         ride_date: data.rideDate || 'N/A',
         ride_shift: data.rideShift || 'N/A',
         affiliation: data.affiliation || 'N/A',
-        message: 'A new Ride-Along waiver has been submitted. The signed PDF (including driver\'s license photo) has been downloaded by the submitter for upload.'
+        // PDF as base64 attachment (requires email service that supports attachments)
+        pdf_attachment: pdfBase64,
+        pdf_filename: 'Ride_Along_Waiver_' + riderName.replace(/\s+/g, '_') + '.pdf',
+        message: 'A new Ride-Along waiver has been submitted. The signed PDF with driver\'s license is attached.'
       };
 
+      // EMAIL_SERVICE_PLACEHOLDER: Replace send() call below with your email service
+      // EmailJS: emailjs.send('SERVICE_ID', 'TEMPLATE_ID', templateParams)
+      // Or swap to: Formspree, SendGrid, Mailgun, SMTP.js, etc.
       const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
 
       if (result.status === 200) {
-        showStatus('Success! Notification email sent and PDF downloaded with signature & driver\'s license included.', 'success');
+        showStatus('Success! Waiver PDF with driver\'s license emailed.', 'success');
       } else {
-        showStatus('PDF downloaded but email notification failed. Please upload the PDF manually.', 'error');
+        // Fallback: download the PDF locally
+        doc.save('Ride_Along_Waiver_' + riderName.replace(/\s+/g, '_') + '.pdf');
+        showStatus('Email failed — PDF downloaded instead. Please send it manually.', 'error');
       }
     } catch (err) {
-      console.error('EmailJS error:', err);
-      showStatus('PDF downloaded but email failed: ' + (err.text || err.message || 'Unknown error') + '. Please upload the PDF manually.', 'error');
+      console.error('Email error:', err);
+      // Fallback: download the PDF locally
+      const doc2 = generatePDF();
+      doc2.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
+      showStatus('Email failed: ' + (err.text || err.message || 'Unknown error') + '. PDF downloaded instead — please send manually.', 'error');
     }
 
     btn.disabled = false;
