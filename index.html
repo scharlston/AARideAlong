@@ -1211,9 +1211,6 @@
       const doc = generatePDF();
       doc.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
 
-      // Compress DL image (resize to 640px wide, 50% quality JPEG)
-      const dlBase64 = await compressDLImage(640, 0.5);
-
       const data = getFormData();
 
       const templateParams = {
@@ -1228,18 +1225,13 @@
         ride_date: data.rideDate || 'N/A',
         ride_shift: data.rideShift || 'N/A',
         affiliation: data.affiliation || 'N/A',
-        message: 'A new Ride-Along waiver has been submitted. See attached driver\'s license image. The signed PDF with full details has been auto-downloaded by the submitter.'
+        message: 'A new Ride-Along waiver has been submitted. The signed PDF (including driver\'s license photo) has been downloaded by the submitter for upload.'
       };
-
-      // Attach DL image if available
-      if (dlBase64) {
-        templateParams.dl_image = dlBase64;
-      }
 
       const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
 
       if (result.status === 200) {
-        showStatus('Success! Email sent with driver\'s license and PDF downloaded.', 'success');
+        showStatus('Success! Notification email sent and PDF downloaded with signature & driver\'s license included.', 'success');
       } else {
         showStatus('PDF downloaded but email notification failed. Please upload the PDF manually.', 'error');
       }
