@@ -766,6 +766,8 @@
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 (function() {
@@ -1162,6 +1164,9 @@
     showStatus('PDF downloaded successfully!', 'success');
   });
 
+  // ── EmailJS Init ──
+  emailjs.init('ne6iDF0IyuFqKoQWv');
+
   // ── Submit & Email ──
   document.getElementById('waiver-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1178,26 +1183,21 @@
       const pdfBase64 = doc.output('datauristring').split(',')[1];
       const data = getFormData();
 
-      const response = await fetch('/api/submit-waiver', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          riderName: data.riderName,
-          riderDate: data.riderDate,
-          pdfBase64: pdfBase64,
-          dlImageBase64: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : null
-        })
-      });
+      const templateParams = {
+        participant_name: data.riderName,
+        submission_date: new Date().toLocaleDateString(),
+        pdf_attachment: pdfBase64
+      };
 
-      const result = await response.json();
+      const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
 
-      if (result.success) {
-        showStatus('Waiver submitted successfully! A PDF copy has been emailed.', 'success');
+      if (result.status === 200) {
+        showStatus('Waiver submitted successfully! A PDF copy has been emailed to HR.', 'success');
       } else {
-        showStatus('Email failed: ' + (result.error || 'Unknown error') + '. You can still download the PDF using the button above.', 'error');
+        showStatus('Email failed. You can still download the PDF using the button above.', 'error');
       }
     } catch (err) {
-      showStatus('Could not connect to the server. You can download the PDF instead.', 'error');
+      showStatus('Email failed: ' + (err.text || 'Unknown error') + '. You can still download the PDF using the button above.', 'error');
     }
 
     btn.disabled = false;
