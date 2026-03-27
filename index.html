@@ -1164,6 +1164,34 @@
     showStatus('PDF downloaded successfully!', 'success');
   });
 
+  // ── Compress DL image for email ──
+  function compressDLImage(maxWidth, quality) {
+    return new Promise((resolve) => {
+      const fileInput = document.getElementById('dlUpload');
+      if (!fileInput.files || !fileInput.files[0]) {
+        resolve(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const scale = Math.min(1, maxWidth / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Get base64 without the data:image/jpeg;base64, prefix
+          const base64 = canvas.toDataURL('image/jpeg', quality).split(',')[1];
+          resolve(base64);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+  }
+
   // ── EmailJS Init ──
   emailjs.init('ne6iDF0IyuFqKoQWv');
 
@@ -1176,12 +1204,15 @@
     const originalText = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Submitting...';
-    showStatus('Generating PDF and sending email...', 'info');
+    showStatus('Generating PDF and compressing DL image...', 'info');
 
     try {
       // Auto-download the PDF first
       const doc = generatePDF();
       doc.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
+
+      // Compress DL image (resize to 640px wide, 50% quality JPEG)
+      const dlBase64 = await compressDLImage(640, 0.5);
 
       const data = getFormData();
 
@@ -1197,13 +1228,18 @@
         ride_date: data.rideDate || 'N/A',
         ride_shift: data.rideShift || 'N/A',
         affiliation: data.affiliation || 'N/A',
-        message: 'A new Ride-Along waiver has been submitted. The PDF with signature and driver\'s license has been auto-downloaded by the submitter and should be forwarded or uploaded separately.'
+        message: 'A new Ride-Along waiver has been submitted. See attached driver\'s license image. The signed PDF with full details has been auto-downloaded by the submitter.'
       };
+
+      // Attach DL image if available
+      if (dlBase64) {
+        templateParams.dl_image = dlBase64;
+      }
 
       const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
 
       if (result.status === 200) {
-        showStatus('Success! Notification email sent and PDF downloaded. Please upload the PDF to the designated folder.', 'success');
+        showStatus('Success! Email sent with driver\'s license and PDF downloaded.', 'success');
       } else {
         showStatus('PDF downloaded but email notification failed. Please upload the PDF manually.', 'error');
       }
