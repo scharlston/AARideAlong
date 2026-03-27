@@ -1179,25 +1179,37 @@
     showStatus('Generating PDF and sending email...', 'info');
 
     try {
+      // Auto-download the PDF first
       const doc = generatePDF();
-      const pdfBase64 = doc.output('datauristring').split(',')[1];
+      doc.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
+
       const data = getFormData();
 
       const templateParams = {
-        participant_name: data.riderName,
+        participant_name: data.riderName || 'N/A',
         submission_date: new Date().toLocaleDateString(),
-        pdf_attachment: pdfBase64
+        rider_email: data.riderEmail || 'N/A',
+        rider_phone: data.riderPhone || 'N/A',
+        rider_dob: data.riderDOB || 'N/A',
+        rider_address: data.riderAddress || 'N/A',
+        emergency_contact: data.emergencyName || 'N/A',
+        emergency_phone: data.emergencyPhone || 'N/A',
+        ride_date: data.rideDate || 'N/A',
+        ride_shift: data.rideShift || 'N/A',
+        affiliation: data.affiliation || 'N/A',
+        message: 'A new Ride-Along waiver has been submitted. The PDF with signature and driver\'s license has been auto-downloaded by the submitter and should be forwarded or uploaded separately.'
       };
 
       const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
 
       if (result.status === 200) {
-        showStatus('Waiver submitted successfully! A PDF copy has been emailed to HR.', 'success');
+        showStatus('Success! Notification email sent and PDF downloaded. Please upload the PDF to the designated folder.', 'success');
       } else {
-        showStatus('Email failed. You can still download the PDF using the button above.', 'error');
+        showStatus('PDF downloaded but email notification failed. Please upload the PDF manually.', 'error');
       }
     } catch (err) {
-      showStatus('Email failed: ' + (err.text || 'Unknown error') + '. You can still download the PDF using the button above.', 'error');
+      console.error('EmailJS error:', err);
+      showStatus('PDF downloaded but email failed: ' + (err.text || err.message || 'Unknown error') + '. Please upload the PDF manually.', 'error');
     }
 
     btn.disabled = false;
