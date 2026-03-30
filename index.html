@@ -680,27 +680,43 @@
       </div>
     </div>
 
-    <div class="form-group-title">Program Information</div>
-
     <div class="form-row">
       <div class="form-group">
-        <label>Program / School</label>
-        <input type="text" id="program-school">
-      </div>
-      <div class="form-group">
-        <label>Primary Instructor</label>
-        <input type="text" id="program-instructor">
+        <label>Reason for Ride-Along <span style="color:#c8102e">*</span></label>
+        <select id="ride-reason" required>
+          <option value="" disabled selected>Select a reason...</option>
+          <option value="EMT Student">EMT Student</option>
+          <option value="MICN">MICN</option>
+          <option value="Base Hospital Physician">Base Hospital Physician</option>
+          <option value="Resident MD">Resident MD</option>
+          <option value="Family/Guest">Family/Guest</option>
+        </select>
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Date Semester Starts <em>(if applicable)</em></label>
-        <input type="date" id="semester-start">
+    <div id="program-info-section" style="display:none;">
+      <div class="form-group-title">Program Information</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Program / School <span style="color:#c8102e">*</span></label>
+          <input type="text" id="program-school">
+        </div>
+        <div class="form-group">
+          <label>Primary Instructor <span style="color:#c8102e">*</span></label>
+          <input type="text" id="program-instructor">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Date Semester Ends <em>(if applicable)</em></label>
-        <input type="date" id="semester-end">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date Semester Starts <span style="color:#c8102e">*</span></label>
+          <input type="date" id="semester-start">
+        </div>
+        <div class="form-group">
+          <label>Date Semester Ends <span style="color:#c8102e">*</span></label>
+          <input type="date" id="semester-end">
+        </div>
       </div>
     </div>
 
@@ -882,6 +898,23 @@
     reader.readAsDataURL(file);
   }
 
+  // ── Ride Reason: toggle Program Info required ──
+  const rideReasonSelect = document.getElementById('ride-reason');
+  const programFields = ['program-school', 'program-instructor', 'semester-start', 'semester-end'];
+  const programBadge = document.getElementById('program-required-badge');
+
+  const programSection = document.getElementById('program-info-section');
+
+  rideReasonSelect.addEventListener('change', function() {
+    const isEMT = this.value === 'EMT Student';
+    programSection.style.display = isEMT ? 'block' : 'none';
+    programFields.forEach(id => {
+      const el = document.getElementById(id);
+      el.required = isEMT;
+      if (!isEMT) el.value = '';
+    });
+  });
+
   // ── Set today's date as default ──
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('rider-date').value = today;
@@ -895,6 +928,7 @@
       riderDL: document.getElementById('rider-dl').value.trim(),
       riderCSZ: document.getElementById('rider-csz').value.trim(),
       riderPhone: document.getElementById('rider-phone').value.trim(),
+      rideReason: document.getElementById('ride-reason').value,
       programSchool: document.getElementById('program-school').value.trim(),
       programInstructor: document.getElementById('program-instructor').value.trim(),
       semesterStart: document.getElementById('semester-start').value,
@@ -1010,6 +1044,9 @@
 
     addField('City, State & Zip', data.riderCSZ, col1, y, halfW);
     addField('Phone', data.riderPhone, col2, y, halfW);
+    y += 14;
+
+    addField('Reason for Ride-Along', data.rideReason, col1, y, halfW);
     y += 18;
 
     // Program Info
