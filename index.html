@@ -782,8 +782,6 @@
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 (function() {
@@ -1229,10 +1227,7 @@
     });
   }
 
-  // ── EmailJS Init ──
-  emailjs.init('ne6iDF0IyuFqKoQWv');
-
-  // ── Submit & Email ──
+  // ── Submit & Post to API ──
   document.getElementById('waiver-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     if (!validateForm()) return;
@@ -1241,52 +1236,63 @@
     const originalText = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Submitting...';
-    showStatus('Generating PDF and compressing DL image...', 'info');
+    showStatus('Submitting ride-along request...', 'info');
 
     try {
-      // Generate the PDF (includes DL on page 2)
+      const data = getFormData();
       const doc = generatePDF();
       const pdfBase64 = doc.output('datauristring').split(',')[1];
-      const riderName = document.getElementById('riderName').value || 'Unknown';
 
-      const data = getFormData();
+      const formatDate = (dateStr) => dateStr ? dateStr + 'T00:00:00' : null;
 
-      const templateParams = {
-        participant_name: data.riderName || 'N/A',
-        submission_date: new Date().toLocaleDateString(),
-        rider_email: data.riderEmail || 'N/A',
-        rider_phone: data.riderPhone || 'N/A',
-        rider_dob: data.riderDOB || 'N/A',
-        rider_address: data.riderAddress || 'N/A',
-        emergency_contact: data.emergencyName || 'N/A',
-        emergency_phone: data.emergencyPhone || 'N/A',
-        ride_date: data.rideDate || 'N/A',
-        ride_shift: data.rideShift || 'N/A',
-        affiliation: data.affiliation || 'N/A',
-        // PDF as base64 attachment (requires email service that supports attachments)
-        pdf_attachment: pdfBase64,
-        pdf_filename: 'Ride_Along_Waiver_' + riderName.replace(/\s+/g, '_') + '.pdf',
-        message: 'A new Ride-Along waiver has been submitted. The signed PDF with driver\'s license is attached.'
+      const payload = {
+        PDFForm: pdfBase64,
+        name: data.riderName,
+        address: data.riderAddress,
+        license: data.riderDL,
+        cityStateZip: data.riderCSZ,
+        phone: data.riderPhone,
+        licenseImage: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : '',
+        reason: data.rideReason,
+        emergencyName: data.ecName,
+        emergencyPhone: data.ecPhone,
+        emergencyRelation: data.ecRelation,
+        emergencyAddress: data.ecAddress,
+        school: data.programSchool,
+        instructor: data.programInstructor,
+        semesterStartDate: formatDate(data.semesterStart),
+        semesterEndDate: formatDate(data.semesterEnd),
+        signatureImage: signaturePad.toDataURL('image/png').split(',')[1]
       };
 
-      // EMAIL_SERVICE_PLACEHOLDER: Replace send() call below with your email service
-      // EmailJS: emailjs.send('SERVICE_ID', 'TEMPLATE_ID', templateParams)
-      // Or swap to: Formspree, SendGrid, Mailgun, SMTP.js, etc.
-      const result = await emailjs.send('service_sanv1hh', 'template_4gwetwz', templateParams);
+      const response = await fetch('https://www.lynxstat.com/lynxvehicleapi/RideAlong/SubmitRideAlong', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-      if (result.status === 200) {
-        showStatus('Success! Waiver PDF with driver\'s license emailed.', 'success');
+      if (response.ok) {
+        showStatus('Success! Your ride-along request has been submitted.', 'success');
+        document.getElementById('waiver-form').reset();
+        signaturePad.clear();
+        dlImageDataUrl = null;
+        dlPreviewContainer.style.display = 'none';
+        dlUploadPrompt.style.display = '';
+        dlFileInfo.textContent = '';
       } else {
-        // Fallback: download the PDF locally
-        doc.save('Ride_Along_Waiver_' + riderName.replace(/\s+/g, '_') + '.pdf');
-        showStatus('Email failed — PDF downloaded instead. Please send it manually.', 'error');
+        let errMsg = response.statusText;
+        try {
+          const errBody = await response.json();
+          errMsg = errBody.message || errBody.error || JSON.stringify(errBody);
+        } catch (_) {
+          errMsg = (await response.text()) || response.statusText;
+        }
+        console.error('Submission error response:', errMsg);
+        showStatus('Submission failed. Please try again or contact hr@americanambulance.com.', 'error');
       }
     } catch (err) {
-      console.error('Email error:', err);
-      // Fallback: download the PDF locally
-      const doc2 = generatePDF();
-      doc2.save('Ride_Along_Waiver_' + (document.getElementById('riderName').value || 'form').replace(/\s+/g, '_') + '.pdf');
-      showStatus('Email failed: ' + (err.text || err.message || 'Unknown error') + '. PDF downloaded instead — please send manually.', 'error');
+      console.error('Submission error:', err);
+      showStatus('Submission failed: ' + (err.message || 'Unknown error') + '. Please try again.', 'error');
     }
 
     btn.disabled = false;
