@@ -1240,10 +1240,13 @@
 
     try {
       const data = getFormData();
+      const doc = generatePDF();
+      const pdfBase64 = doc.output('datauristring').split(',')[1];
 
       const formatDate = (dateStr) => dateStr ? dateStr + 'T00:00:00' : null;
 
       const payload = {
+        PDFForm: pdfBase64,
         name: data.riderName,
         address: data.riderAddress,
         license: data.riderDL,
