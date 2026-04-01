@@ -1247,22 +1247,22 @@
 
       const payload = {
         PDFForm: pdfBase64,
-        name: data.riderName,
-        address: data.riderAddress,
-        license: data.riderDL,
-        cityStateZip: data.riderCSZ,
-        phone: data.riderPhone,
-        licenseImage: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : '',
-        reason: data.rideReason,
-        emergencyName: data.ecName,
-        emergencyPhone: data.ecPhone,
-        emergencyRelation: data.ecRelation,
-        emergencyAddress: data.ecAddress,
-        school: data.programSchool,
-        instructor: data.programInstructor,
-        semesterStartDate: formatDate(data.semesterStart),
-        semesterEndDate: formatDate(data.semesterEnd),
-        signatureImage: signaturePad.toDataURL('image/png').split(',')[1]
+        Name: data.riderName,
+        Address: data.riderAddress,
+        License: data.riderDL,
+        CityStateZip: data.riderCSZ,
+        Phone: data.riderPhone,
+        LicenseImage: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : '',
+        Reason: data.rideReason,
+        EmergencyName: data.ecName,
+        EmergencyPhone: data.ecPhone,
+        EmergencyRelation: data.ecRelation,
+        EmergencyAddress: data.ecAddress,
+        School: data.programSchool,
+        Instructor: data.programInstructor,
+        SemesterStartDate: formatDate(data.semesterStart),
+        SemesterEndDate: formatDate(data.semesterEnd),
+        SignatureImage: signaturePad.toDataURL('image/png').split(',')[1]
       };
 
       const response = await fetch('https://www.lynxstat.com/lynxvehicleapi/RideAlong/SubmitRideAlong', {
