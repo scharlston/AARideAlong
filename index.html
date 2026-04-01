@@ -974,7 +974,10 @@
 
   // ── PDF Generation ──
   function generatePDF() {
-    const { jsPDF } = window.jspdf;
+    const jsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+    if (!jsPDF) {
+      throw new Error('PDF generation library failed to load. Please refresh the page and try again.');
+    }
     const doc = new jsPDF('p', 'mm', 'letter');
     const data = getFormData();
     const pw = 215.9; // letter width mm
@@ -1192,11 +1195,15 @@
   // ── Download PDF ──
   document.getElementById('btn-download').addEventListener('click', function() {
     if (!validateForm()) return;
-    const doc = generatePDF();
-    const data = getFormData();
-    const safeName = data.riderName.replace(/[^a-zA-Z0-9]/g, '_');
-    doc.save(`RideAlong_Waiver_${safeName}.pdf`);
-    showStatus('PDF downloaded successfully!', 'success');
+    try {
+      const doc = generatePDF();
+      const data = getFormData();
+      const safeName = data.riderName.replace(/[^a-zA-Z0-9]/g, '_');
+      doc.save(`RideAlong_Waiver_${safeName}.pdf`);
+      showStatus('PDF downloaded successfully!', 'success');
+    } catch (err) {
+      showStatus('PDF generation failed: ' + (err.message || 'Unknown error') + '. Please try again.', 'error');
+    }
   });
 
   // ── Compress DL image for email ──
