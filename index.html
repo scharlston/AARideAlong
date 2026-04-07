@@ -217,6 +217,32 @@
       box-shadow: 0 0 0 3px rgba(0,61,165,0.1);
     }
 
+    .checkbox-group {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px 12px;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fafafa;
+      overflow-x: auto;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
     .form-group input.error {
       border-color: #c8102e;
       box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
@@ -691,6 +717,32 @@
       </div>
     </div>
 
+    <div class="form-group-title">Availability</div>
+
+    <div class="form-group">
+      <label>Day of Week <span style="color:#c8102e">*</span></label>
+      <div class="checkbox-group" id="day-of-week-group">
+        <label class="checkbox-label"><input type="checkbox" id="day-all" value="Anytime"> Anytime</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Monday"> Mon</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Tuesday"> Tue</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Wednesday"> Wed</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Thursday"> Thu</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Friday"> Fri</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Saturday"> Sat</label>
+        <label class="checkbox-label"><input type="checkbox" class="day-cb" value="Sunday"> Sun</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Time of Shift <span style="color:#c8102e">*</span></label>
+      <div class="checkbox-group" id="shift-time-group">
+        <label class="checkbox-label"><input type="checkbox" id="shift-all" value="Anytime"> Anytime</label>
+        <label class="checkbox-label"><input type="checkbox" class="shift-cb" value="AM"> AM</label>
+        <label class="checkbox-label"><input type="checkbox" class="shift-cb" value="Swing"> Swing</label>
+        <label class="checkbox-label"><input type="checkbox" class="shift-cb" value="PM"> PM</label>
+      </div>
+    </div>
+
     <div id="program-info-section" style="display:none;">
       <div class="form-group-title">Program Information</div>
 
@@ -913,6 +965,26 @@
     });
   });
 
+  // ── Availability: "All" checkbox toggles ──
+  const dayAll = document.getElementById('day-all');
+  const dayCbs = document.querySelectorAll('.day-cb');
+  const shiftAll = document.getElementById('shift-all');
+  const shiftCbs = document.querySelectorAll('.shift-cb');
+
+  dayAll.addEventListener('change', () => {
+    dayCbs.forEach(cb => cb.checked = dayAll.checked);
+  });
+  dayCbs.forEach(cb => cb.addEventListener('change', () => {
+    dayAll.checked = [...dayCbs].every(c => c.checked);
+  }));
+
+  shiftAll.addEventListener('change', () => {
+    shiftCbs.forEach(cb => cb.checked = shiftAll.checked);
+  });
+  shiftCbs.forEach(cb => cb.addEventListener('change', () => {
+    shiftAll.checked = [...shiftCbs].every(c => c.checked);
+  }));
+
   // ── Set today's date as default ──
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('rider-date').value = today;
@@ -927,6 +999,8 @@
       riderCSZ: document.getElementById('rider-csz').value.trim(),
       riderPhone: document.getElementById('rider-phone').value.trim(),
       rideReason: document.getElementById('ride-reason').value,
+      availDays: [...document.querySelectorAll('.day-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('day-all').checked ? 'Anytime' : ''),
+      availShifts: [...document.querySelectorAll('.shift-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('shift-all').checked ? 'Anytime' : ''),
       programSchool: document.getElementById('program-school').value.trim(),
       programInstructor: document.getElementById('program-instructor').value.trim(),
       semesterStart: document.getElementById('semester-start').value,
@@ -942,6 +1016,16 @@
     const form = document.getElementById('waiver-form');
     if (!form.checkValidity()) {
       form.reportValidity();
+      return false;
+    }
+    if (!document.querySelector('.day-cb:checked') && !document.getElementById('day-all').checked) {
+      showStatus('Please select at least one available day.', 'error');
+      document.getElementById('day-of-week-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    if (!document.querySelector('.shift-cb:checked') && !document.getElementById('shift-all').checked) {
+      showStatus('Please select at least one shift time.', 'error');
+      document.getElementById('shift-time-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return false;
     }
     if (!dlImageDataUrl) {
@@ -1048,6 +1132,10 @@
     y += 14;
 
     addField('Reason for Ride-Along', data.rideReason, col1, y, halfW);
+    y += 14;
+
+    addField('Available Days', data.availDays, col1, y, halfW);
+    addField('Shift Preference', data.availShifts, col2, y, halfW);
     y += 18;
 
     // Program Info
@@ -1269,7 +1357,9 @@
         Instructor: data.programInstructor,
         SemesterStartDate: formatDate(data.semesterStart),
         SemesterEndDate: formatDate(data.semesterEnd),
-        SignatureImage: signaturePad.toDataURL('image/png').split(',')[1]
+        SignatureImage: signaturePad.toDataURL('image/png').split(',')[1],
+        AvailableDays: data.availDays,
+        ShiftPreference: data.availShifts
       };
 
       const response = await fetch('https://www.lynxstat.com/lynxvehicleapi/RideAlong/SubmitRideAlong', {
