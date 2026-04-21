@@ -602,7 +602,7 @@
       <li>Flat, closed toed shoes (no sandals, heels, or cowboy boots).</li>
       <li>Work boots and plain tennis shoes or sneakers that are a single neutral color are permissible.</li>
       <li>Solid color, without embroidery, collared shirt or school affiliated T-Shirt.</li>
-      <li>A solid-colored sweatshirt or jacket without a hood or any embroidery. The only exception is embroidery that is officially affiliated with the school.</li>
+      <li>A solid-color sweatshirt or jacket without any embroidery. The only exception is embroidery that is officially affiliated with the school.</li>
       <li>Personal items, other than a stethoscope, are not permitted.</li>
     </ul>
 
@@ -680,6 +680,13 @@
       <div class="form-group">
         <label>Phone <span class="required">*</span></label>
         <input type="tel" id="rider-phone" required>
+      </div>
+    </div>
+
+    <div class="form-row" style="grid-template-columns: 1fr;">
+      <div class="form-group">
+        <label>Email <span class="required">*</span></label>
+        <input type="email" id="rider-email" required>
       </div>
     </div>
 
@@ -999,6 +1006,7 @@
       riderDL: document.getElementById('rider-dl').value.trim(),
       riderCSZ: document.getElementById('rider-csz').value.trim(),
       riderPhone: document.getElementById('rider-phone').value.trim(),
+      riderEmail: document.getElementById('rider-email').value.trim(),
       rideReason: document.getElementById('ride-reason').value,
       availDays: [...document.querySelectorAll('.day-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('day-all').checked ? 'Anytime' : ''),
       availShifts: [...document.querySelectorAll('.shift-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('shift-all').checked ? 'Anytime' : ''),
@@ -1130,6 +1138,9 @@
 
     addField('City, State & Zip', data.riderCSZ, col1, y, halfW);
     addField('Phone', data.riderPhone, col2, y, halfW);
+    y += 14;
+
+    addField('Email', data.riderEmail, col1, y, contentW);
     y += 14;
 
     addField('Reason for Ride-Along', data.rideReason, col1, y, halfW);
@@ -1348,6 +1359,7 @@
         License: data.riderDL,
         CityStateZip: data.riderCSZ,
         Phone: data.riderPhone,
+        Email: data.riderEmail,
         LicenseImage: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : '',
         Reason: data.rideReason,
         EmergencyName: data.ecName,
