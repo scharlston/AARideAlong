@@ -723,6 +723,15 @@
           <option value="Family/Guest">Family/Guest</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Preferred County <span style="color:#c8102e">*</span></label>
+        <select id="preferred-county" required>
+          <option value="" disabled selected>Select a county...</option>
+          <option value="Fresno">Fresno</option>
+          <option value="Kings">Kings</option>
+          <option value="Madera">Madera</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group-title">Availability</div>
@@ -1008,6 +1017,7 @@
       riderPhone: document.getElementById('rider-phone').value.trim(),
       riderEmail: document.getElementById('rider-email').value.trim(),
       rideReason: document.getElementById('ride-reason').value,
+      preferredCounty: document.getElementById('preferred-county').value,
       availDays: [...document.querySelectorAll('.day-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('day-all').checked ? 'Anytime' : ''),
       availShifts: [...document.querySelectorAll('.shift-cb:checked')].map(cb => cb.value).join(', ') || (document.getElementById('shift-all').checked ? 'Anytime' : ''),
       programSchool: document.getElementById('program-school').value.trim(),
@@ -1144,6 +1154,7 @@
     y += 14;
 
     addField('Reason for Ride-Along', data.rideReason, col1, y, halfW);
+    addField('Preferred County', data.preferredCounty, col2, y, halfW);
     y += 14;
 
     addField('Available Days', data.availDays, col1, y, halfW);
@@ -1362,6 +1373,7 @@
         Email: data.riderEmail,
         LicenseImage: dlImageDataUrl ? dlImageDataUrl.split(',')[1] : '',
         Reason: data.rideReason,
+        PreferredCounty: data.preferredCounty,
         EmergencyName: data.ecName,
         EmergencyPhone: data.ecPhone,
         EmergencyRelation: data.ecRelation,

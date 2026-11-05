@@ -1,0 +1,15 @@
+{
+  "name": "ride-along-waiver-form",
+  "version": "1.0.0",
+  "description": "American Ambulance Ride-Along Program Waiver Form",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.9.16"
+  }
+}
